@@ -23,7 +23,7 @@ module.exports.game = sequelize.define('game', {
 }, {
   // options
 });
-sequelize.sync();
+// sequelize.sync();
 // sequelize.authenticate()
 //   .then(() => {
 //     sequelize.sync()
