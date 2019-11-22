@@ -9,7 +9,7 @@ const GameHistory = ({ gameHistory }) => (
       const messages = {
         "1": <div key={id}>{date} {player1_name} demolished {player2_name}!</div>,
         "2": <div key={id}>{date} {player2_name} schooled {player1_name}!</div >,
-        "-1": <div key={id}>{date} {player2_name} and {player1_name} played a boring game where no one won.</div >
+        "-1": <div key={id}>{date} {player2_name} and {player1_name} played a boring game where no one won.. </div >
       }
       return messages[winner]
 
