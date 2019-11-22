@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
-const sequelize = process.env.DATABASE_URL ?
-  new Sequelize(process.env.DATABASE_URL) :
+const sequelize = process.env.HEROKU_POSTGRESQL_PURPLE_URL ?
+  new Sequelize(process.env.HEROKU_POSTGRESQL_PURPLE_URL) :
   new Sequelize('connect4', 'root', '', {
     host: 'localhost',
     dialect: 'mysql'
