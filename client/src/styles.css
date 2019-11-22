@@ -457,11 +457,11 @@ td {
 }
 
 .playerH1 {
-  background-color: #bf4040;
+  background-color: #be9b9b;
 }
 
 .playerH2 {
-  background-color: #ffe066;
+  background-color: #d8cda7;
 }
 
 .p1 {
@@ -470,6 +470,10 @@ td {
 
 .p2 {
   color: #ffcc33;
+}
+
+.container {
+  padding: 0px 0px 20px;
 }
 
 .button,

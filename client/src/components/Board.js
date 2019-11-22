@@ -15,9 +15,7 @@ class Board extends React.Component {
     this.moveHandler = this.moveHandler.bind(this)
     this.toggleHoverCol = this.toggleHoverCol.bind(this)
   }
-  componentDidMount() {
-    console.log("did mount")
-  }
+
   reset() {
     this.setState({
       board:
@@ -177,22 +175,31 @@ class Board extends React.Component {
     }
     return 0;
   }
-
+  // [1, 2, 1, 2, 1, 2],
+  // [0, 0, 0, 0, 2, 1],
+  // [0, 0, 1, 2, 1, 2],
+  // [0, 0, 0, 1, 1, 2],
+  // [0, 0, 0, 0, 1, 2],
+  // [0, 0, 0, 0, 0, 0],
+  // [0, 0, 0, 0, 1, 2]
   _checkMajorDiag(c) {
     let streakingPlayer = 0;
     let numInRow = 0;
     for (let r = 0; r < this.numRows; r++) {
-      if (this.state.board[c] && this.state.board[c][r]) {
+      if (c >= 0 && c < this.numCols) {
         if (this.state.board[c][r] === streakingPlayer) {
           numInRow++;
           if (streakingPlayer !== 0 && numInRow === 4) {
             console.log(`Win found: Major Diag Player ${streakingPlayer}`)
+            console.log(JSON.stringify(this.state.board))
             return streakingPlayer;
           }
         } else {
           streakingPlayer = this.state.board[c][r];
-          numInRow = 1;
+          numInRow = 0;
         }
+
+
       }
       c++;
     }
@@ -212,7 +219,7 @@ class Board extends React.Component {
     let streakingPlayer = 0;
     let numInRow = 0;
     for (let r = 0; r < this.numRows; r++) {
-      if (this.state.board[c] && this.state.board[c][r]) {
+      if (c >= 0) {
         if (this.state.board[c][r] === streakingPlayer) {
           numInRow++;
           if (streakingPlayer !== 0 && numInRow === 4) {
