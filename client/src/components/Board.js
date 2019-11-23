@@ -32,7 +32,7 @@ class Board extends React.Component {
       rows.push(this._renderRow(r));
     }
     return <div>
-      <table>{rows}</table>
+      <table className="board">{rows}</table>
       <p>{this.state.errorMessage}</p>
       {!this.props.inPlay ? <button type="reset" onClick={() => this.reset()}>Reset</button> : <></>}
     </div>

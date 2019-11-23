@@ -1,6 +1,6 @@
 import React from "react";
 import Board from "./components/Board.js"
-import GameHistory from "./components/GameHistory"
+import Scoreboard from "./components/Scoreboard"
 import PlayerNamesPrompt from "./components/PlayerNamesPrompt"
 import axios from 'axios'
 
@@ -16,7 +16,8 @@ class App extends React.Component {
         1: null,
         2: null
       },
-      gameHistory: []
+      gameHistory: [],
+      leaderboard: []
     };
 
     this.changePlayer = this.changePlayer.bind(this);
@@ -25,13 +26,18 @@ class App extends React.Component {
     this.handleNameInput = this.handleNameInput.bind(this);
   }
   componentDidMount() {
-    this.refreshGameHistory()
+    this.refreshScoreboard()
   }
-  refreshGameHistory() {
+  refreshScoreboard() {
     return axios.get('/games')
       .then(({ data }) => {
         this.setState({ gameHistory: data })
+        return axios.get('/leaderboard')
       })
+      .then(({ data }) => {
+        this.setState({ leaderboard: data })
+      })
+      .catch((err) => console.log(err))
   }
 
   handleNameInput({ player1, player2 }) {
@@ -73,7 +79,7 @@ class App extends React.Component {
       player2_name: this.state.names[2],
       winner: winner
     })
-      .then(() => this.refreshGameHistory())
+      .then(() => this.refreshScoreboard())
       .then((res) => console.log(res))
       .catch((err) => console.error(err))
   }
@@ -88,8 +94,12 @@ class App extends React.Component {
 
   render() {
     if (!this.state.names[1] || !this.state.names[2]) {
-      return <PlayerNamesPrompt
-        handleSubmit={this.handleNameInput} />
+      return <div>
+        <PlayerNamesPrompt
+          handleSubmit={this.handleNameInput} />
+        <Scoreboard gameHistory={this.state.gameHistory}
+          leaderboard={this.state.leaderboard} />
+      </div>
     } else {
       return <div>
         {this.state.headerMessage}
@@ -98,7 +108,8 @@ class App extends React.Component {
           changePlayer={this.changePlayer}
           handleWin={this.handleWin}
           handleReset={this.handleReset} />
-        <GameHistory gameHistory={this.state.gameHistory} />
+        <Scoreboard gameHistory={this.state.gameHistory}
+          leaderboard={this.state.leaderboard} />
       </div>
     }
 

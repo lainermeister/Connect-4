@@ -19,16 +19,5 @@ module.exports.game = sequelize.define('game', {
     type: Sequelize.INTEGER,
     allowNull: false
   }
-
-}, {
-  // options
 });
-// sequelize.sync();
-// sequelize.authenticate()
-//   .then(() => {
-//     sequelize.sync()
-//     console.log('Connection has been established successfully.');
-//   })
-//   .catch(err => {
-//     console.error('Unable to connect to the database:', err);
-//   });
+

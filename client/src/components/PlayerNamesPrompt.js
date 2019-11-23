@@ -15,27 +15,30 @@ class PlayerNamesPrompt extends React.Component {
   }
 
   render() {
-    return <div>
+    return <fieldset>
       <h1> Welcome to Connect 4</h1>
       <h4>
         Please enter your names.
       </h4>
-      <div className="container">
-        <div>
-          Player 1:
+      <form>
+        <fieldset>
+          Player 1:&nbsp;
           <input type="text" id="player1"
             onChange={this.handleChange}
             value={this.state.player1} />
-        </div>
-        <div>
-          Player 2:
+        </fieldset>
+        <fieldset>
+          Player 2:&nbsp;
           <input type="text" id="player2"
             onChange={this.handleChange}
             value={this.state.player2} />
-        </div>
-      </div>
-      <input type="button" value="Submit" onClick={() => this.props.handleSubmit(this.state)} />
-    </div>
+
+        </fieldset>
+        <input type="submit" onClick={() => this.props.handleSubmit(this.state)} />
+      </form>
+    </fieldset>
+
+
   }
 }
 
