@@ -1,5 +1,6 @@
 const express = require('express')
-const { game } = require('../db/')
+const Sequelize = require('sequelize');
+const { game, player, playerGame } = require('../db/')
 const app = express()
 const port = process.env.PORT || 3000
 app.use(express.static('client/dist/'))
@@ -8,51 +9,65 @@ app.get('/', (req, res) => res.render('index'))
 
 
 app.get('/games', (req, res) => {
-  game.findAll(
-    {
-      limit: 5,
-      order: [['createdAt', 'DESC']]
-    }
-  )
-    .then(games => res.send(games))
-    .catch(err => res.send(err))
+  game.findAll({ include: [{ model: player, required: true, right: true }] })
+    .then(games => games.map(({ dataValues: game }) => {
+      let winner;
+      if (!game.winnerId) {
+        winner = -1;
+      } else {
+        winner = game.winnerId === game.players[0].dataValues.id ? 1 : 2;
+      }
+      return {
+        id: game.id,
+        player1_name: game.players[0].dataValues.name,
+        player2_name: game.players[1].dataValues.name,
+        winner: winner,
+        createdAt: new Date(game.createdAt).toLocaleDateString()
+      }
+    }))
+    .then((data) => res.send(data))
+    .catch(err => console.log(err))
 })
 app.get('/leaderboard', (req, res) => {
-  game.findAll()
-    .then(games => {
-      const scores = {};
-      games.forEach((game) => {
-        if (game.winner === 1) {
-          if (scores[game.player1_name]) {
-            scores[game.player1_name]++;
-          } else {
-            scores[game.player1_name] = 1;
-          }
-        } else {
-          if (scores[game.player2_name]) {
-            scores[game.player2_name]++;
-          } else {
-            scores[game.player2_name] = 1;
-          }
+  player.findAll({
+    include: [{ model: game, required: true, right: true }]
+  })
+    .then((players) => players.map((player) => ({
+      name: player.name,
+      wins: (player.games).reduce((total, game) => {
+        console.log(player.name, player.id, game.winnerId);
+        if (game.winnerId === player.id) {
+          return total + 1;
         }
-      })
-      let ranking = [];
-      Object.keys(scores).forEach((score) => {
-        ranking.push({
-          name: score,
-          numWins: scores[score]
-        })
-      })
-      ranking.sort((a, b) => b.numWins - a.numWins)
-      res.send(ranking)
-    })
+        return total;
+      }, 0)
+    })))
+    .then((data) => res.send(data))
     .catch(err => res.send(err))
 })
 app.post('/games', (req, res) => {
   const { player1_name, player2_name, winner } = req.body;
-  game.create({ player1_name, player2_name, winner })
-    .then(({ id }) => res.send({ gameId: id }))
-    .catch(err => res.sendStatus(500))
+  let player1Id, player2Id;
+
+  Promise.all([
+    player.findOrCreate({ where: { name: player1_name } }),
+    player.findOrCreate({ where: { name: player2_name } })
+  ])
+    .then(([player1, player2]) => {
+      player1Id = player1[0].id;
+      player2Id = player2[0].id;
+      const winnerId = winner === 1 ? player1Id :
+        winner === 2 ? player2Id : null;
+      return game.create({ winnerId })
+    })
+    .then((game) => {
+      return Promise.all([
+        playerGame.create({ gameId: game.id, playerId: player1Id }),
+        playerGame.create({ gameId: game.id, playerId: player2Id })])
+
+    })
+    .then((response) => res.send(response))
+    .catch(err => res.send(err))
 })
 app.get('/teapot', (rep, res) => {
   res.sendStatus(418)
