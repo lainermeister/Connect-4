@@ -32,7 +32,7 @@ game.belongsToMany(player, {
   otherKey: 'playerId'
 });
 // drop database connect4; create database connect4; use connect4;
-// sequelize.sync()
+sequelize.sync()
 module.exports.player = player;
 module.exports.game = game;
 module.exports.playerGame = playerGame;
