@@ -4,8 +4,9 @@ import axios from "axios"
 const Scoreboard = ({ gameHistory, leaderboard }) => (
   <table>
     <tr>
-      <th>Recent Games</th>
-      <th>Leaderboard</th>
+      <th><div className="recent">Recent Games</div></th>
+      <th><div className="leaderboard">Leaderboard</div>
+        </th>
     </tr>
     <tr>
       <td>

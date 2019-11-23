@@ -9,7 +9,8 @@ app.get('/', (req, res) => res.render('index'))
 
 
 app.get('/games', (req, res) => {
-  game.findAll({ include: [{ model: player, required: true, right: true }] })
+  game.findAll({ include: [{ model: player, required: true, right: true }],
+  order: [['createdAt', 'DESC']] })
     .then(games => games.map(({ dataValues: game }) => {
       let winner;
       if (!game.winnerId) {
@@ -35,7 +36,6 @@ app.get('/leaderboard', (req, res) => {
     .then((players) => players.map((player) => ({
       name: player.name,
       wins: (player.games).reduce((total, game) => {
-        console.log(player.name, player.id, game.winnerId);
         if (game.winnerId === player.id) {
           return total + 1;
         }
