@@ -196,7 +196,7 @@ class Board extends React.Component {
           }
         } else {
           streakingPlayer = this.state.board[c][r];
-          numInRow = 0;
+          numInRow = 1;
         }
 
 
