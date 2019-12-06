@@ -1,14 +1,14 @@
 # Connect-4
 
-Playable Connect 4 Game built in Javascript.
+Playable _Connect 4_ Game built in Javascript.
 
 ![example game](/client/src/img/example.png)
 
 ## Features
 
-- All Connect Four rules implemented
+- All _Connect 4_ rules implemented
 - Ability for users to enter player names
-- Game records kept and displayed via Recent Games and Leaderboard dashboards
+- Game records kept and displayed via **Recent Games** and **Leaderboard** dashboards
 
 ## To run deployed app
 
@@ -25,7 +25,7 @@ npm install
 To setup the MySQL database (in mySQL shell):
 
 ```mysql
-drop database connect4; create database connect4; use connect4;
+drop database if exists connect4; create database connect4; use connect4;
 ```
 
 To create a production build and start server:
