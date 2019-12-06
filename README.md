@@ -1,8 +1,20 @@
-# empty-project
+# Connect-4
 
-Empty project.
+Playable Connect 4 Game built in Javascript.
 
-## Building and running on localhost
+![example game](/client/src/img/example.png)
+
+## Features
+
+- All Connect Four rules implemented
+- Ability for users to enter player names
+- Game records kept and displayed via Recent Games and Leaderboard dashboards
+
+## To run deployed app
+
+[Click here](https://connect4-lainermeister.herokuapp.com/)
+
+## To run app locally
 
 First install dependencies:
 
@@ -10,22 +22,30 @@ First install dependencies:
 npm install
 ```
 
-To create a production build:
+To setup the MySQL database (in mySQL shell):
+
+```mysql
+drop database connect4; create database connect4; use connect4;
+```
+
+To create a production build and start server:
 
 ```sh
 npm run build-prod
 ```
 
-To create a development build:
+```sh
+npm start
+```
+
+To create a development build and start server:
 
 ```sh
 npm run build-dev
 ```
 
-## Running
+```sh
+npm run server-dev
+```
 
-Open the file `dist/index.html` in your browser
-
-## Credits
-
-Made with [createapp.dev](https://createapp.dev/)
+Navigate to `http://localhost:3000` in your browser
